@@ -1,0 +1,7 @@
+version: "3.4"
+
+services:
+  app:
+    image: "uber/prototool:1.8.1"
+    volumes:
+      - ".:/work"

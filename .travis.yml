@@ -1,0 +1,9 @@
+language: minimal
+
+sudo: required
+
+services:
+  - docker
+
+script:
+  - make lint

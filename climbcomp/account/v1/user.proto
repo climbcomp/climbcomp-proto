@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package climbcomp.account.v1;
+
+option csharp_namespace = "Climbcomp.Account.V1";
+option go_package = "accountv1";
+option java_multiple_files = true;
+option java_outer_classname = "UserProto";
+option java_package = "com.climbcomp.account.v1";
+option objc_class_prefix = "CAX";
+option php_namespace = "Climbcomp\\Account\\V1";
+
+import "google/protobuf/timestamp.proto";
+
+// A user account.
+message User {
+    string id = 1;
+    string username = 2;
+
+    google.protobuf.Timestamp created_time = 3;
+    google.protobuf.Timestamp updated_time = 4;
+}
