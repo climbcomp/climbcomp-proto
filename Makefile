@@ -8,3 +8,6 @@ lint:
 
 build:
 	docker-compose run --rm app prototool generate
+
+release:
+	docker-compose run --rm release semantic-release

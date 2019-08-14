@@ -5,3 +5,10 @@ services:
     image: "uber/prototool:1.8.1"
     volumes:
       - ".:/work"
+
+  release:
+    image: "climbcomp/semantic-release:15.13.21"
+    environment:
+      - GH_TOKEN
+    volumes:
+      - ".:/app"
