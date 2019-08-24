@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOCAL_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+LOCAL_SHA=$(git rev-parse HEAD)
+
+GH_TOKEN=${GH_TOKEN:?} # Required
+
+DISTROOT=${DISTROOT-./dist}
+REPOROOT=${REPOROOT-./dist-repos}
+
+CURRENT_BRANCH=${TRAVIS_BRANCH-$LOCAL_BRANCH}
+CURRENT_SHA=${TRAVIS_COMMIT-$LOCAL_SHA}
+CURRENT_REF="climbcomp/climbcomp-proto@$CURRENT_SHA"
+
+
+function distribute-all-langs {
+  local langs
+
+  # ensure roots exist
+  mkdir -p "$DISTROOT"
+  mkdir -p "$REPOROOT"
+  # determine the languages
+  langs=$(/bin/ls -1 "$DISTROOT" | xargs)
+
+  echo ""
+  echo "Distributing artifacts for $CURRENT_REF"
+
+  for l in $langs; do
+    distribute-lang "$l"
+  done
+
+  echo ""
+  echo "Done!"
+  echo ""
+}
+
+function distribute-lang {
+  local lang="$1"
+  local distpath="${DISTROOT:?}/$lang"
+  local reponame="climbcomp-$lang"
+  local repopath="${REPOROOT:?}/$reponame"
+  local remoteurl="https://${GH_TOKEN:?}@github.com/climbcomp/$reponame.git"
+
+  echo ""
+  echo "Distributing $distpath to $reponame"
+
+  echo " -> Cloning remote into $repopath"
+  rm -rf "$repopath"
+  git clone "$remoteurl" "$repopath"
+
+  pushd "$repopath" > /dev/null
+  setup-git-branch
+  popd > /dev/null
+
+  echo " -> Copying generated files into $repopath"
+  if [ "$lang" == "ruby" ]; then
+    mkdir -p "$repopath/lib"
+    cp -R "$distpath/"* "$repopath/lib/"
+  else
+    cp -R "$distpath/"* "$repopath/"
+  fi
+  cp ./VERSION "$repopath/VERSION"
+
+  pushd "$repopath" > /dev/null
+  commit-and-push
+  popd > /dev/null
+}
+
+function setup-git-branch {
+  if ! git show-branch "$CURRENT_BRANCH"; then
+    echo " -> Creating branch $CURRENT_BRANCH"
+    git branch "$CURRENT_BRANCH"
+  fi
+
+  echo " -> Checking out $CURRENT_BRANCH"
+  git checkout "$CURRENT_BRANCH"
+
+  if git ls-remote --heads --exit-code origin "$CURRENT_BRANCH"; then
+    echo " -> Pulling $CURRENT_BRANCH from remote"
+    git pull origin "$CURRENT_BRANCH"
+  fi
+}
+
+function commit-and-push {
+  if [ "$(git config user.email)" == "" ]; then
+      git config user.email "travis@travis-ci.org"
+  fi
+  if [ "$(git config user.name)" == "" ]; then
+      git config user.name "Travis CI"
+  fi
+
+  git add -N .
+  if ! git diff --exit-code > /dev/null; then
+    echo " -> Committing changes"
+    git add .
+    git commit -m "Generated files from $CURRENT_REF"
+    echo " -> Pushing changes"
+    git push origin HEAD
+  else
+    echo " -> No changes to distribute"
+  fi
+}
+
+distribute-all-langs

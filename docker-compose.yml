@@ -3,6 +3,10 @@ version: "3.4"
 services:
   app:
     image: "uber/prototool:1.8.1"
+    environment:
+      - GH_TOKEN
+      - TRAVIS_BRANCH
+      - TRAVIS_COMMIT
     volumes:
       - ".:/work"
 
@@ -10,5 +14,7 @@ services:
     image: "climbcomp/semantic-release:15.13.21"
     environment:
       - GH_TOKEN
+      - TRAVIS_BRANCH
+      - TRAVIS_PULL_REQUEST
     volumes:
       - ".:/app"

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOCAL_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+
+GH_TOKEN=${GH_TOKEN:?} # Required
+TRAVIS_BRANCH=${TRAVIS_BRANCH:-$LOCAL_BRANCH}
+TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST:-false}
+
+
+function ensure-branch-is-master {
+    if [ "${TRAVIS_BRANCH}" != "master" ]; then
+        echo "TRAVIS_BRANCH is not master: ${TRAVIS_BRANCH}"
+        exit 0
+    fi
+}
+
+function ensure-not-pull-request {
+    if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
+        echo "TRAVIS_PULL_REQUEST is not false: ${TRAVIS_PULL_REQUEST}"
+        exit 0
+    fi
+}
+
+
+ensure-branch-is-master
+ensure-not-pull-request
+
+# Uses `./.releaserc.json` to:
+# - Bump the version based on commit messages (using semver)
+# - Create CHANGELOG and VERSION files and commit
+# - Create git tag and github release
+semantic-release

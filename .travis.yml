@@ -9,3 +9,6 @@ script:
   - make lint
   - make build
   - make release
+  - make distribute
+
+if: tag IS blank
