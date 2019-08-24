@@ -14,7 +14,10 @@ services:
     image: "climbcomp/semantic-release:15.13.21"
     environment:
       - GH_TOKEN
+      - TRAVIS
       - TRAVIS_BRANCH
+      - TRAVIS_COMMIT
+      - TRAVIS_COMMIT_RANGE
       - TRAVIS_PULL_REQUEST
     volumes:
       - ".:/app"
