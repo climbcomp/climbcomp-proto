@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -euo pipefail
 
 LOCAL_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
@@ -8,14 +8,14 @@ TRAVIS_BRANCH=${TRAVIS_BRANCH:-$LOCAL_BRANCH}
 TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST:-false}
 
 
-function ensure-branch-is-master {
+ensure_branch_is_master() {
     if [ "${TRAVIS_BRANCH}" != "master" ]; then
         echo "TRAVIS_BRANCH is not master: ${TRAVIS_BRANCH}"
         exit 0
     fi
 }
 
-function ensure-not-pull-request {
+ensure_not_pull_request() {
     if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
         echo "TRAVIS_PULL_REQUEST is not false: ${TRAVIS_PULL_REQUEST}"
         exit 0
@@ -23,8 +23,8 @@ function ensure-not-pull-request {
 }
 
 
-ensure-branch-is-master
-ensure-not-pull-request
+ensure_branch_is_master
+ensure_not_pull_request
 
 # Uses `./.releaserc.json` to:
 # - Bump the version based on commit messages (using semver)
