@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.2...v1.0.3) (2019-08-27)
+
+
+### Bug Fixes
+
+* **release:** Use separate message flags to ensure correct formatting ([71bdb22](https://github.com/climbcomp/climbcomp-proto/commit/71bdb22))
+
 ## [1.0.2](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.1...v1.0.2) (2019-08-27)
 
 
