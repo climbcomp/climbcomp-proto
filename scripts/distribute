@@ -12,7 +12,7 @@ REPOROOT=${REPOROOT-./dist-repos}
 BUILD_URL=${TRAVIS_BUILD_WEB_URL}
 CURRENT_BRANCH=${TRAVIS_BRANCH-$LOCAL_BRANCH}
 CURRENT_SHA=${TRAVIS_COMMIT_RANGE-$LOCAL_SHA}
-CURRENT_REF="climbcomp/climbcomp-proto@$CURRENT_SHA"
+CURRENT_REF="https://github.com/climbcomp/climbcomp-proto/compare/$CURRENT_SHA"
 
 
 function distribute-all-langs {
