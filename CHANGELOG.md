@@ -1,3 +1,11 @@
+## [1.0.4](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.3...v1.0.4) (2019-08-27)
+
+
+### Bug Fixes
+
+* **release:** Remove diff to fix build formatting ([9367d3d](https://github.com/climbcomp/climbcomp-proto/commit/9367d3d))
+* **release:** Use compare link in commit message ([91a1e59](https://github.com/climbcomp/climbcomp-proto/commit/91a1e59))
+
 ## [1.0.3](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.2...v1.0.3) (2019-08-27)
 
 
