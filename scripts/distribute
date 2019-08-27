@@ -96,7 +96,7 @@ function commit-and-push {
     echo " -> Committing changes"
     git diff --compact-summary
     git add .
-    git commit -m "Generated from ${CURRENT_REF}\\n\\n${BUILD_URL}"
+    git commit -m "Generated from ${CURRENT_REF}" -m "Travis Build: ${BUILD_URL}"
     echo " -> Pushing changes"
     git push -q origin HEAD > /dev/null 2>&1
   else
