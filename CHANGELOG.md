@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.1...v1.0.2) (2019-08-27)
+
+
+### Bug Fixes
+
+* **release:** Escape newlines in commit message ([5bb116a](https://github.com/climbcomp/climbcomp-proto/commit/5bb116a))
+
 ## [1.0.1](https://github.com/climbcomp/climbcomp-proto/compare/v1.0.0...v1.0.1) (2019-08-27)
 
 
