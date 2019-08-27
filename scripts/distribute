@@ -9,8 +9,9 @@ GH_TOKEN=${GH_TOKEN:?} # Required
 DISTROOT=${DISTROOT-./dist}
 REPOROOT=${REPOROOT-./dist-repos}
 
+BUILD_URL=${TRAVIS_BUILD_WEB_URL}
 CURRENT_BRANCH=${TRAVIS_BRANCH-$LOCAL_BRANCH}
-CURRENT_SHA=${TRAVIS_COMMIT-$LOCAL_SHA}
+CURRENT_SHA=${TRAVIS_COMMIT_RANGE-$LOCAL_SHA}
 CURRENT_REF="climbcomp/climbcomp-proto@$CURRENT_SHA"
 
 
@@ -47,7 +48,7 @@ function distribute-lang {
 
   echo " -> Cloning remote into $repopath"
   rm -rf "$repopath"
-  git clone "$remoteurl" "$repopath"
+  git clone "$remoteurl" "$repopath" > /dev/null 2>&1
 
   pushd "$repopath" > /dev/null
   setup-git-branch
@@ -70,15 +71,15 @@ function distribute-lang {
 function setup-git-branch {
   if ! git show-branch "$CURRENT_BRANCH"; then
     echo " -> Creating branch $CURRENT_BRANCH"
-    git branch "$CURRENT_BRANCH"
+    git branch "$CURRENT_BRANCH" > /dev/null 2>&1
   fi
 
   echo " -> Checking out $CURRENT_BRANCH"
-  git checkout "$CURRENT_BRANCH"
+  git checkout "$CURRENT_BRANCH" > /dev/null 2>&1
 
   if git ls-remote --heads --exit-code origin "$CURRENT_BRANCH"; then
     echo " -> Pulling $CURRENT_BRANCH from remote"
-    git pull origin "$CURRENT_BRANCH"
+    git pull origin "$CURRENT_BRANCH" > /dev/null 2>&1
   fi
 }
 
@@ -93,10 +94,11 @@ function commit-and-push {
   git add -N .
   if ! git diff --exit-code > /dev/null; then
     echo " -> Committing changes"
+    git diff --compact-summary
     git add .
-    git commit -m "Generated files from $CURRENT_REF"
+    git commit -m "Generated from ${CURRENT_REF}\n\n${BUILD_URL}"
     echo " -> Pushing changes"
-    git push origin HEAD
+    git push -q origin HEAD > /dev/null 2>&1
   else
     echo " -> No changes to distribute"
   fi

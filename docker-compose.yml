@@ -5,8 +5,12 @@ services:
     image: "uber/prototool:1.8.1"
     environment:
       - GH_TOKEN
+      - TRAVIS
+      - TRAVIS_BUILD_WEB_URL
       - TRAVIS_BRANCH
       - TRAVIS_COMMIT
+      - TRAVIS_COMMIT_RANGE
+      - TRAVIS_PULL_REQUEST
     volumes:
       - ".:/work"
 
@@ -15,6 +19,7 @@ services:
     environment:
       - GH_TOKEN
       - TRAVIS
+      - TRAVIS_BUILD_WEB_URL
       - TRAVIS_BRANCH
       - TRAVIS_COMMIT
       - TRAVIS_COMMIT_RANGE
