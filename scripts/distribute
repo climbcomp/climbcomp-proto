@@ -94,7 +94,6 @@ function commit-and-push {
   git add -N .
   if ! git diff --exit-code > /dev/null; then
     echo " -> Committing changes"
-    git diff --compact-summary
     git add .
     git commit -m "Generated from ${CURRENT_REF}" -m "Travis Build: ${BUILD_URL}"
     echo " -> Pushing changes"
