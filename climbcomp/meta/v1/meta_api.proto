@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package climbcomp.meta.v1;
+
+option csharp_namespace = "Climbcomp.Meta.V1";
+option go_package = "metav1";
+option java_multiple_files = true;
+option java_outer_classname = "MetaApiProto";
+option java_package = "com.climbcomp.meta.v1";
+option objc_class_prefix = "CMX";
+option php_namespace = "Climbcomp\\Meta\\V1";
+
+// Info about the Climbcomp API itself.
+service MetaAPI {
+  // Returns the current API version.
+  rpc GetVersion(GetVersionRequest) returns (GetVersionResponse);
+}
+
+message GetVersionRequest {
+}
+
+message GetVersionResponse {
+  string version = 1;
+}
